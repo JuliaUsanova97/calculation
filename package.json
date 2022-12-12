@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "cypress": "^12.0.2",
+    "generate": "^0.10.0",
+    "generate-data": "^0.1.8",
+    "generate-random-data": "^0.0.3"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0"
+  }
+}
