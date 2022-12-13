@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dayjs": "^1.11.7",
     "generate": "^0.10.0",
     "generate-data": "^0.1.8",
     "generate-random-data": "^0.0.3"

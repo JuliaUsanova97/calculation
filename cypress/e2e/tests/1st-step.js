@@ -48,7 +48,7 @@ describe("1st step of creating campaign", () => {
     archivateCampaign();
   });
 
-  it("Verify that name field should not contain more than 255 characters", () => {
+  it.only("Verify that name field should not contain more than 255 characters", () => {
     cy.get('[class="sc-1q8thk9-0 lgPsCv"]').should("exist").clear();
     cy.get('[class="sc-1q8thk9-0 lgPsCv"]').type("testtest");
     cy.get('[class="sc-1duzzy5-0 heFnBy enter-done"]').should("exist");
