@@ -1,16 +1,16 @@
 import { random, faker } from "@faker-js/faker";
+import { archivateCampaign } from "../../../cypress/e2e/lib/functions";
 
 describe("1st step of creating campaign", () => {
   beforeEach(() => {
-    cy.visit("https://thefuture:ofadvertising@app.curryfresh.de/sign-in");
+    cy.visit(`${Cypress.env("WEBSITE_URL")}/sign-in`);
     cy.get('[class="sc-12hrgpe-0 sc-1l3wqm4-9 bkBocI eyXyno"]')
       .should("have.text", "Auswahl erlauben")
       .click();
-    cy.get('[type="email"]').click().type("mihagof219@cnogs.com");
-    cy.get('[type="password"]').click().type("qweqweqwe");
+    cy.get('[type="email"]').type(Cypress.env("EMAIL"));
+    cy.get('[type="password"]').type(Cypress.env("PASSWORD"));
     cy.get('[class="sc-pbn3r-0 dRRtnH sc-hi8gwd-7 egnZdD"').click();
-    cy.wait(3000);
-    cy.url().should("include", "https://app.curryfresh.de/dashboard/campaigns");
+    cy.url().should("include", "/dashboard/campaigns", { timeout: 10000 });
     cy.get('[class="sc-pbn3r-0 dRRtnH"]')
       .should("have.text", "Neue Kampagne")
       .should("be.not.disabled")
@@ -48,9 +48,9 @@ describe("1st step of creating campaign", () => {
     archivateCampaign();
   });
 
-  it.only("Verify that name field should not contain more than 255 characters", () => {
+  it("Redirect to the 2nd step", () => {
     cy.get('[class="sc-1q8thk9-0 lgPsCv"]').should("exist").clear();
-    cy.get('[class="sc-1q8thk9-0 lgPsCv"]').type("testtest");
+    cy.get('[class="sc-1q8thk9-0 lgPsCv"]').type("faker.name.firstName");
     cy.get('[class="sc-1duzzy5-0 heFnBy enter-done"]').should("exist");
     cy.get('[class="sc-pbn3r-0 dRRtnH"]')
       .eq(1)
@@ -63,18 +63,3 @@ describe("1st step of creating campaign", () => {
     archivateCampaign();
   });
 });
-
-function archivateCampaign() {
-  cy.get('[class="sc-12hrgpe-0 sc-cgzfnp-5 bkBocI bdTtHM"]').click();
-  cy.wait(1000);
-  cy.get('[class="sc-19i9sxu-1 gdvgEv"]').eq(0).should("be.visible");
-  cy.get('[class="sc-933bxs-1 cGsKjp"]').eq(2).should("be.visible").click();
-  cy.get('[class="modal-content sc-icb63j-1 ccRvgk is-opened"]').should(
-    "be.visible"
-  );
-  cy.get('[class="sc-pbn3r-1 kxXfoF"]').contains("Bestätigen");
-  cy.get('[class="sc-pbn3r-0 dRRtnH sc-2rxh1o-2 dqTPSW"]')
-    .should("be.visible")
-    .click();
-  cy.wait(2000);
-}
