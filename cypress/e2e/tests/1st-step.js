@@ -16,6 +16,8 @@ describe("1st step of creating campaign", () => {
     cy.contains("button", "Weiter").should("not.be.disabled");
     cy.get('[value^="Neue Kampagne"]').should("exist").clear();
     cy.contains("button", "Weiter").should("be.disabled");
+    cy.get('[title="Abbrechen"]').click();
+    cy.wait(1000);
     archivateCampaign();
   });
   it("Verify that name field should not contain more than 255 characters", () => {
@@ -37,6 +39,8 @@ describe("1st step of creating campaign", () => {
       .type("{backspace}");
     cy.contains("button", "Weiter").should("be.not.disabled");
     cy.get('[role="img"]').should("exist");
+    cy.get('[title="Abbrechen"]').click();
+    cy.wait(1000);
     archivateCampaign();
   });
 
@@ -50,6 +54,8 @@ describe("1st step of creating campaign", () => {
     cy.get('[role="img"]').should("exist");
     cy.contains("button", "Weiter").should("be.not.disabled").click();
     cy.contains("h2", "2 / 6 Kampagnenzeitraum");
+    cy.get('[title="Abbrechen"]').click();
+    cy.wait(1000);
     archivateCampaign();
   });
 });

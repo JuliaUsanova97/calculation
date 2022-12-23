@@ -1,4 +1,4 @@
-import { random, faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { archivateCampaign } from "../../../cypress/e2e/lib/functions";
 
 const dayjs = require("dayjs");
@@ -27,6 +27,8 @@ describe("2nd step of creating campaign", () => {
     cy.contains("button", "Weiter").should("be.disabled");
     cy.contains("button", "Zurück").should("not.be.disabled").click();
     cy.contains("h2", "1 / 6 Kampagnenname").should("exist");
+    cy.get('[title="Abbrechen"]').click();
+    cy.wait(1000);
     archivateCampaign();
   });
 
@@ -62,11 +64,12 @@ describe("2nd step of creating campaign", () => {
         .add(1, "day")
         .format("D.M.YYYY")}']`
     ).should("not.be.disabled");
-
+    cy.get('[title="Abbrechen"]').click();
+    cy.wait(1000);
     archivateCampaign();
   });
 
-  it("Verify selected date is displayed correcly in the field and redirect to the 3rd step", () => {
+  it("Verify selected dates are displayed correcly in the field and redirect to the 3rd step", () => {
     cy.get('[placeholder="dd/mm/yyyy"]').eq(0).click();
     cy.get('[data-focus-lock-disabled="false"]').should("be.visible");
     cy.get(`[aria-label='${futureFirstDate}']`).click();
@@ -81,7 +84,8 @@ describe("2nd step of creating campaign", () => {
 
     cy.contains("button", "Weiter").should("not.be.disabled").click();
     cy.contains("h2", "3 / 6 Medien-Datei").should("exist");
-
+    cy.get('[title="Abbrechen"]').click();
+    cy.wait(1000);
     archivateCampaign();
   });
 });
