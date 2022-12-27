@@ -29,3 +29,15 @@ export function submitSecondStep() {
   cy.get('[aria-label="Sieht richtig aus"]').should("exist");
   cy.contains("button", "Weiter").should("not.be.disabled").click();
 }
+
+
+export function submitThirdStep() {
+  cy.contains("button", "Bilder").click();
+      cy.contains("button", "Hochladen").click();
+      cy.get("input[type=file]").selectFile("cypress/fixtures/image-step-3.jpg", {
+        force: true,
+      });
+      cy.wait(5000);
+      cy.contains("button", "Fertig").click();
+      cy.contains("button", "Weiter").click();
+}
