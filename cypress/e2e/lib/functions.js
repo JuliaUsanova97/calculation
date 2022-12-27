@@ -30,14 +30,18 @@ export function submitSecondStep() {
   cy.contains("button", "Weiter").should("not.be.disabled").click();
 }
 
-
 export function submitThirdStep() {
   cy.contains("button", "Bilder").click();
-      cy.contains("button", "Hochladen").click();
-      cy.get("input[type=file]").selectFile("cypress/fixtures/image-step-3.jpg", {
-        force: true,
-      });
-      cy.wait(5000);
-      cy.contains("button", "Fertig").click();
-      cy.contains("button", "Weiter").click();
+  cy.contains("button", "Hochladen").click();
+  cy.get("input[type=file]").selectFile("cypress/fixtures/image-step-3.jpg", {
+    force: true,
+  });
+  cy.wait(5000);
+  cy.contains("button", "Fertig").click();
+  cy.contains("button", "Weiter").click();
+}
+
+export function submitFourthStep() {
+  cy.get("select").select(`0`);
+  cy.contains("button", "Weiter").should("not.be.disabled").click();
 }

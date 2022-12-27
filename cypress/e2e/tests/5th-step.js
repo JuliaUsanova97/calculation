@@ -2,11 +2,13 @@ import {
   submitFirstStep,
   submitSecondStep,
   submitThirdStep,
+  submitFourthStep,
 } from "../../../cypress/e2e/lib/functions";
 import { archivateCampaign } from "../../../cypress/e2e/lib/functions";
-const i = 5;
 
-describe("4th step of creating campaign", () => {
+const randomNumber = Math.floor(Math.random() * (100 - 0)) + 0;
+
+describe("5th step of creating campaign", () => {
   beforeEach(() => {
     cy.visit(`${Cypress.env("WEBSITE_URL")}/sign-in`);
     cy.get('[type="submit"]').contains("Auswahl erlauben").click();
@@ -29,28 +31,38 @@ describe("4th step of creating campaign", () => {
     submitFirstStep();
     submitSecondStep();
     submitThirdStep();
+    submitFourthStep();
   });
 
-  it("Verify that user can select any value for field and check redirect to the 5th step", () => {
+  it("Verify that user can add random ad unit from the list", () => {
     cy.contains("button", "Weiter").should("be.disabled");
     cy.contains("button", "Zurück").should("not.be.disabled").click();
-    cy.contains("h2", "3 / 6 Medien-Datei").should("exist");
+    cy.contains("h2", "4 / 6 Kapazität").should("exist");
     cy.contains("button", "Weiter").click();
-    cy.contains(
-      "option",
-      "Wie viel Displaykapazität möchtest du buchen?"
-    ).should("exist");
-
-    for (let i = 0; i < 5; i++) {
-      cy.get("select").select(`${i}`);
-      cy.contains(`${i + 1}0 %`);
-    }
-    cy.get("select").select(`0`);
-    cy.get('[aria-label="Sieht richtig aus"]').should("exist");
-    cy.contains("button", "Weiter").should("not.be.disabled").click();
-    cy.contains("h2", "5 / 6 Displays").should("exist");
-    cy.get('[title="Abbrechen"]').click();
+    cy.contains("button", "0 Displays ausgewählt").click();
     cy.wait(1000);
-    archivateCampaign();
+    cy.get('[aria-label="grid"]')
+      .scrollTo("0%", `${randomNumber}%`)
+      .then(() => {
+        cy.get("[class$=is-selectable]")
+          .eq(0)
+          .find('[type="checkbox"]', { force: true })
+          .click();
+      });
+
+    /* 
+    cy.get('[class="sc-l2ahyy-3 jcMZwx"]')
+      .invoke("text")
+      .then(($text) => {
+        cy.get(
+          `[data-index="${
+            Math.floor(Math.random() * (parseInt($text) - 0 + 1)) + 0
+          }"]`
+        ).click();
+      }); */
+
+    /*     cy.get('[title="Abbrechen"]').click();
+    cy.wait(1000);
+    archivateCampaign(); */
   });
 });
