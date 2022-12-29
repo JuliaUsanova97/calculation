@@ -3,6 +3,7 @@ import {
   submitSecondStep,
   submitThirdStep,
   submitFourthStep,
+  submitFifthStep,
 } from "../../../cypress/e2e/lib/functions";
 import { archivateCampaign } from "../../../cypress/e2e/lib/functions";
 
@@ -32,30 +33,10 @@ describe("5th step of creating campaign", () => {
     submitSecondStep();
     submitThirdStep();
     submitFourthStep();
+    submitFifthStep();
   });
 
-  it("Verify that user can add random ad unit from the list", () => {
-    cy.contains("button", "Weiter").should("be.disabled");
-    cy.contains("button", "Zurück").should("not.be.disabled").click();
-    cy.contains("h2", "4 / 6 Kapazität").should("exist");
-    cy.contains("button", "Weiter").click();
-    cy.contains("button", "0 Displays ausgewählt").click();
-    cy.wait(1000);
-    cy.get('[role="dialog"]').should("be.visible");
-    cy.get('[aria-label="grid"]').scrollTo("0%", `${randomNumber}%`);
-    cy.wait(1000);
-    cy.get('[role="rowgroup"]').children().first().scrollIntoView();
-    cy.wait(1000);
-
-    cy.get('[class="sc-l2ahyy-2 bpSloI"]').eq(4).click();
-    cy.wait(1000);
-
-    cy.contains("button", "Zur Kampagne hinzufügen").click();
-    cy.get('[role="dialog"]').should("not.exist");
-    cy.contains("button", "1 Display ausgewählt");
-    cy.get('[aria-label="Sieht richtig aus"]').should("exist");
-    cy.contains("button", "Weiter").should("not.be.disabled").click();
-    cy.wait(10000);
+  it("Verify that values are disaplyed correctly", () => {
     cy.contains("h2", "6 / 6 Kampagnenzusammenfassung").should("exist");
 
     cy.get('[title="Abbrechen"]').click();

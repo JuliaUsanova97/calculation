@@ -45,3 +45,18 @@ export function submitFourthStep() {
   cy.get("select").select(`0`);
   cy.contains("button", "Weiter").should("not.be.disabled").click();
 }
+
+export function submitFifthStep() {
+  cy.contains("button", "0 Displays ausgewählt").click();
+  cy.wait(1000);
+  cy.get('[aria-label="grid"]').scrollTo("0%", `${randomNumber}%`);
+  cy.wait(1000);
+  cy.get('[role="rowgroup"]').children().first().scrollIntoView();
+  cy.wait(1000);
+
+  cy.get('[class="sc-l2ahyy-2 bpSloI"]').eq(4).click();
+  cy.wait(1000);
+  cy.contains("button", "Zur Kampagne hinzufügen").click();
+  cy.contains("button", "Weiter").click();
+  cy.wait(10000);
+}
