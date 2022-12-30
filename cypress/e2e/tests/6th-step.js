@@ -53,6 +53,15 @@ describe("6th step of creating campaign", () => {
     cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(3).contains(`${capacity}%`);
     cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(4).contains(`${imageName}.mp4`);
     cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(5).contains("Video");
+    cy.contains('button','Kampagne buchen').click();
+    cy.wait(5000);
+    cy.get('[role="dialog"]').should('exist');
+    cy.get('[placeholder="Name des Kreditkartenbesitzers"]').click().type('test');
+    cy.get('[class="sc-cgpt57-0 brqluU StripeElement StripeElement--empty"]').click()//.type('4242424242424242');
+/*     cy.get('[class="InputElement is-empty Input Input--empty"]').eq(1).click().type('0255');
+    cy.get('[class="InputElement is-empty Input Input--empty"]').eq(2).click().type('123'); */
+
+
 
     /*  cy.get('[title="Abbrechen"]').click();
     cy.wait(1000);
