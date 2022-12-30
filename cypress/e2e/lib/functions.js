@@ -1,10 +1,12 @@
 import { faker } from "@faker-js/faker";
 const dayjs = require("dayjs");
-const futureFirstDate = dayjs().add(1, "week").format("D.M.YYYY");
-const futureSecondDate = dayjs()
+export const futureFirstDate = dayjs().add(1, "week").format("D.M.YYYY");
+export const futureSecondDate = dayjs()
   .add(1, "week")
   .add(1, "day")
   .format("D.M.YYYY");
+const randomNumber = Math.floor(Math.random() * (90 - 10)) + 10;
+export const campaignName = faker.name.firstName();
 
 export function archivateCampaign() {
   cy.get('[class="sc-19i9sxu-0 loGHYh"]')
@@ -18,7 +20,7 @@ export function archivateCampaign() {
 }
 
 export function submitFirstStep() {
-  cy.get('[name="name"]').clear().type(faker.name.firstName());
+  cy.get('[name="name"]').clear().type(campaignName);
   cy.contains("button", "Weiter").should("be.not.disabled").click();
 }
 
@@ -51,10 +53,10 @@ export function submitFifthStep() {
   cy.wait(1000);
   cy.get('[aria-label="grid"]').scrollTo("0%", `${randomNumber}%`);
   cy.wait(1000);
-  cy.get('[role="rowgroup"]').children().first().scrollIntoView();
-  cy.wait(1000);
-
-  cy.get('[class="sc-l2ahyy-2 bpSloI"]').eq(4).click();
+  cy.get('[class="sc-ky7p6x-2 kdeYuM"]')
+    .first()
+    .find('[class="sc-l2ahyy-2 bpSloI"]')
+    .click({ force: true });
   cy.wait(1000);
   cy.contains("button", "Zur Kampagne hinzufügen").click();
   cy.contains("button", "Weiter").click();

@@ -4,12 +4,13 @@ import {
   submitThirdStep,
   submitFourthStep,
   submitFifthStep,
+  archivateCampaign,
+  futureFirstDate,
+  futureSecondDate,
+  campaignName,
 } from "../../../cypress/e2e/lib/functions";
-import { archivateCampaign } from "../../../cypress/e2e/lib/functions";
 
-const randomNumber = Math.floor(Math.random() * (90 - 10)) + 10;
-
-describe("5th step of creating campaign", () => {
+describe("6th step of creating campaign", () => {
   beforeEach(() => {
     cy.visit(`${Cypress.env("WEBSITE_URL")}/sign-in`);
     cy.get('[type="submit"]').contains("Auswahl erlauben").click();
@@ -38,6 +39,11 @@ describe("5th step of creating campaign", () => {
 
   it("Verify that values are disaplyed correctly", () => {
     cy.contains("h2", "6 / 6 Kampagnenzusammenfassung").should("exist");
+
+    cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(0).contains(campaignName);
+    cy.get('[class="sc-1ubqj8f-2 gwLGzD"]')
+      .eq(1)
+      .contains(`${futureFirstDate} - ${futureSecondDate}`);
 
     cy.get('[title="Abbrechen"]').click();
     cy.wait(1000);

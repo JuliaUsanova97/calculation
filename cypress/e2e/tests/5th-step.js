@@ -44,12 +44,10 @@ describe("5th step of creating campaign", () => {
     cy.get('[role="dialog"]').should("be.visible");
     cy.get('[aria-label="grid"]').scrollTo("0%", `${randomNumber}%`);
     cy.wait(1000);
-    cy.get('[role="rowgroup"]').children().first().scrollIntoView();
-    cy.wait(1000);
-
-    cy.get('[class="sc-l2ahyy-2 bpSloI"]').eq(4).click();
-    cy.wait(1000);
-
+    cy.get('[class="sc-ky7p6x-2 kdeYuM"]')
+      .first()
+      .find('[class="sc-l2ahyy-2 bpSloI"]')
+      .click({ force: true });
     cy.contains("button", "Zur Kampagne hinzufügen").click();
     cy.get('[role="dialog"]').should("not.exist");
     cy.contains("button", "1 Display ausgewählt");
