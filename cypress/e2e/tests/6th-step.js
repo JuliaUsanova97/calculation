@@ -8,6 +8,9 @@ import {
   futureFirstDate,
   futureSecondDate,
   campaignName,
+  capacity,
+  numberOfDisplay,
+  imageName,
 } from "../../../cypress/e2e/lib/functions";
 
 describe("6th step of creating campaign", () => {
@@ -44,9 +47,15 @@ describe("6th step of creating campaign", () => {
     cy.get('[class="sc-1ubqj8f-2 gwLGzD"]')
       .eq(1)
       .contains(`${futureFirstDate} - ${futureSecondDate}`);
+    cy.get('[class="sc-1ubqj8f-2 gwLGzD"]')
+      .eq(2)
+      .contains(`${numberOfDisplay}`);
+    cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(3).contains(`${capacity}%`);
+    cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(4).contains(`${imageName}.mp4`);
+    cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(5).contains("Video");
 
-    cy.get('[title="Abbrechen"]').click();
+    /*  cy.get('[title="Abbrechen"]').click();
     cy.wait(1000);
-    archivateCampaign();
+    archivateCampaign(); */
   });
 });

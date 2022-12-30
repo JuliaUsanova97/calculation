@@ -7,6 +7,9 @@ export const futureSecondDate = dayjs()
   .format("D.M.YYYY");
 const randomNumber = Math.floor(Math.random() * (90 - 10)) + 10;
 export const campaignName = faker.name.firstName();
+export const capacity = 10;
+export const numberOfDisplay = 1;
+export const imageName = "image-step-3";
 
 export function archivateCampaign() {
   cy.get('[class="sc-19i9sxu-0 loGHYh"]')
@@ -35,7 +38,7 @@ export function submitSecondStep() {
 export function submitThirdStep() {
   cy.contains("button", "Bilder").click();
   cy.contains("button", "Hochladen").click();
-  cy.get("input[type=file]").selectFile("cypress/fixtures/image-step-3.jpg", {
+  cy.get("input[type=file]").selectFile(`cypress/fixtures/${imageName}.jpg`, {
     force: true,
   });
   cy.wait(5000);
@@ -44,7 +47,9 @@ export function submitThirdStep() {
 }
 
 export function submitFourthStep() {
-  cy.get("select").select(`0`);
+  cy.get("select").select(
+    `Ziel ${capacity}&nbsp;% der Spielzeit aller ausgewählten Displays`
+  );
   cy.contains("button", "Weiter").should("not.be.disabled").click();
 }
 
@@ -58,7 +63,8 @@ export function submitFifthStep() {
     .find('[class="sc-l2ahyy-2 bpSloI"]')
     .click({ force: true });
   cy.wait(1000);
+  cy.contains("button", `${numberOfDisplay} Display ausgewählt`);
   cy.contains("button", "Zur Kampagne hinzufügen").click();
   cy.contains("button", "Weiter").click();
-  cy.wait(10000);
+  cy.wait(15000);
 }
