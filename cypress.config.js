@@ -1,6 +1,8 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
+  chromeWebSecurity: false,
+
   e2e: {
     setupNodeEvents(on, config) {
       // implement node event listeners here
@@ -8,6 +10,8 @@ module.exports = defineConfig({
     specPattern:
       "**/*.{js,jsx,ts,tsx}",
       excludeSpecPattern:
-      "cypress/support/**/*.{js,jsx,ts,tsx}"
+      "cypress/support/**/*.{js,jsx,ts,tsx}",
   }
+
+  
 });
