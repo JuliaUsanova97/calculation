@@ -11,19 +11,25 @@ export const capacity = 10;
 export const numberOfDisplay = 1;
 export const imageName = "image-step-3";
 
-export function archivateCampaign() {
-  cy.get('[class="sc-19i9sxu-0 loGHYh"]')
-    .eq(0)
-    .find('[aria-label="Kampagne archivieren"]')
-    .should("be.visible")
-    .click();
-  cy.get('[role="dialog"]').should("be.visible");
-  cy.contains("button", "Bestätigen").should("be.visible").click();
-  cy.wait(1000);
+export function archivateCampaignIfExist() {
+  cy.get('[class="sc-1jlncfu-1 loqbsV"]')
+  .eq(0)
+  .invoke("text")
+  .then((text) => {
+    if (text === "Entwurf") {
+      cy.get('[class="sc-19i9sxu-0 loGHYh"]')
+      .eq(0)
+      .find('[aria-label="Kampagne archivieren"]')
+      .should("be.visible")
+      .click();
+    cy.get('[role="dialog"]').should("be.visible");
+    cy.contains("button", "Bestätigen").should("be.visible").click();
+    cy.contains(campaignName).should('not.exist');}
+  });
 }
 
 export function submitFirstStep() {
-  cy.get('[name="name"]').clear().type(campaignName);
+  cy.get('[name="name"]').clear().type(campaignName).should('have.value',campaignName);
   cy.contains("button", "Weiter").should("be.not.disabled").click();
 }
 
@@ -41,8 +47,7 @@ export function submitThirdStep() {
   cy.get("input[type=file]").selectFile(`cypress/fixtures/${imageName}.jpg`, {
     force: true,
   });
-  cy.wait(5000);
-  cy.contains("button", "Fertig").click();
+  cy.contains("button", "Fertig",{ timeout: 7000 }).should("not.be.disabled").click();
   cy.contains("button", "Weiter").click();
 }
 
@@ -55,6 +60,7 @@ export function submitFourthStep() {
 
 export function submitFifthStep() {
   cy.contains("button", "0 Displays ausgewählt").click();
+  cy.get('[role="dialog"]').should("be.visible");
   cy.wait(1000);
   cy.get('[aria-label="grid"]').scrollTo("0%", `${randomNumber}%`);
   cy.wait(1000);
@@ -62,9 +68,8 @@ export function submitFifthStep() {
     .first()
     .find('[class="sc-l2ahyy-2 bpSloI"]')
     .click({ force: true });
-  cy.wait(1000);
-  cy.contains("button", `${numberOfDisplay} Display ausgewählt`);
+  cy.contains("button", `${numberOfDisplay} Display ausgewählt`, { timeout: 1000 });
   cy.contains("button", "Zur Kampagne hinzufügen").click();
-  cy.contains("button", "Weiter").click();
-  cy.wait(15000);
+  cy.contains("button", "Weiter").should("not.be.disabled").click();
+  cy.contains("h2", "6 / 6 Kampagnenzusammenfassung", { timeout: 15000 }).should("exist");
 }

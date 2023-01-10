@@ -1,9 +1,9 @@
 import {
+  archivateCampaignIfExist,
   submitFirstStep,
   submitSecondStep,
   submitThirdStep,
 } from "../../../cypress/e2e/lib/functions";
-import { archivateCampaign } from "../../../cypress/e2e/lib/functions";
 const i = 5;
 
 describe("4th step of creating campaign", () => {
@@ -15,14 +15,7 @@ describe("4th step of creating campaign", () => {
     cy.get('[type="submit"]').contains("Anmelden").click();
     cy.url().should("include", "/dashboard/campaigns", { timeout: 10000 });
 
-    cy.get('[class="sc-1jlncfu-1 loqbsV"]')
-      .eq(0)
-      .invoke("text")
-      .then((text) => {
-        if (text === "Entwurf") {
-          archivateCampaign();
-        }
-      });
+    archivateCampaignIfExist();
 
     cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
 
@@ -49,8 +42,5 @@ describe("4th step of creating campaign", () => {
     cy.get('[aria-label="Sieht richtig aus"]').should("exist");
     cy.contains("button", "Weiter").should("not.be.disabled").click();
     cy.contains("h2", "5 / 6 Displays").should("exist");
-    cy.get('[title="Abbrechen"]').click();
-    cy.wait(1000);
-    archivateCampaign();
   });
 });

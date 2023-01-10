@@ -1,5 +1,4 @@
-import { faker } from "@faker-js/faker";
-import { archivateCampaign } from "../../../cypress/e2e/lib/functions";
+import { archivateCampaignIfExist,submitFirstStep } from "../../../cypress/e2e/lib/functions";
 
 const dayjs = require("dayjs");
 const i = 18;
@@ -17,6 +16,9 @@ describe("2nd step of creating campaign", () => {
     cy.get('[type="password"]').type(Cypress.env("PASSWORD"));
     cy.get('[type="submit"]').contains("Anmelden").click();
     cy.url().should("include", "/dashboard/campaigns", { timeout: 10000 });
+    
+    archivateCampaignIfExist();
+
     cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
     submitFirstStep();
   });
@@ -27,9 +29,6 @@ describe("2nd step of creating campaign", () => {
     cy.contains("button", "Weiter").should("be.disabled");
     cy.contains("button", "Zurück").should("not.be.disabled").click();
     cy.contains("h2", "1 / 6 Kampagnenname").should("exist");
-    cy.get('[title="Abbrechen"]').click();
-    cy.wait(1000);
-    archivateCampaign();
   });
 
   it("Verify date is the past and more than 18 months are disabled in calendar", () => {
@@ -64,9 +63,8 @@ describe("2nd step of creating campaign", () => {
         .add(1, "day")
         .format("D.M.YYYY")}']`
     ).should("not.be.disabled");
+
     cy.get('[title="Abbrechen"]').click();
-    cy.wait(1000);
-    archivateCampaign();
   });
 
   it("Verify selected dates are displayed correcly in the field and redirect to the 3rd step", () => {
@@ -84,13 +82,6 @@ describe("2nd step of creating campaign", () => {
 
     cy.contains("button", "Weiter").should("not.be.disabled").click();
     cy.contains("h2", "3 / 6 Medien-Datei").should("exist");
-    cy.get('[title="Abbrechen"]').click();
-    cy.wait(1000);
-    archivateCampaign();
   });
 });
 
-function submitFirstStep() {
-  cy.get('[name="name"]').clear().type(faker.name.firstName());
-  cy.contains("button", "Weiter").should("be.not.disabled").click();
-}

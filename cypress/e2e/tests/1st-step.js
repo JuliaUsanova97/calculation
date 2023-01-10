@@ -1,5 +1,5 @@
 import { random, faker } from "@faker-js/faker";
-import { archivateCampaign } from "../../../cypress/e2e/lib/functions";
+import { archivateCampaignIfExist } from "../../../cypress/e2e/lib/functions";
 
 describe("1st step of creating campaign", () => {
   beforeEach(() => {
@@ -9,17 +9,19 @@ describe("1st step of creating campaign", () => {
     cy.get('[type="password"]').type(Cypress.env("PASSWORD"));
     cy.contains("button", "Anmelden").click();
     cy.url().should("include", "/dashboard/campaigns", { timeout: 10000 });
+
+    archivateCampaignIfExist();
+
     cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
   });
+
   it("Verify pre-filled name and field can not be empty", () => {
     cy.contains("h2", "1 / 6 Kampagnenname");
     cy.contains("button", "Weiter").should("not.be.disabled");
     cy.get('[value^="Neue Kampagne"]').should("exist").clear();
     cy.contains("button", "Weiter").should("be.disabled");
-    cy.get('[title="Abbrechen"]').click();
-    cy.wait(1000);
-    archivateCampaign();
   });
+
   it("Verify that name field should not contain more than 255 characters", () => {
     cy.get('[value^="Neue Kampagne"]').should("exist").clear();
     cy.get('[placeholder="Bitte Namen deiner Kampagne eingeben"]').type(
@@ -39,9 +41,6 @@ describe("1st step of creating campaign", () => {
       .type("{backspace}");
     cy.contains("button", "Weiter").should("be.not.disabled");
     cy.get('[role="img"]').should("exist");
-    cy.get('[title="Abbrechen"]').click();
-    cy.wait(1000);
-    archivateCampaign();
   });
 
   it("Redirect to the 2nd step", () => {
@@ -54,8 +53,5 @@ describe("1st step of creating campaign", () => {
     cy.get('[role="img"]').should("exist");
     cy.contains("button", "Weiter").should("be.not.disabled").click();
     cy.contains("h2", "2 / 6 Kampagnenzeitraum");
-    cy.get('[title="Abbrechen"]').click();
-    cy.wait(1000);
-    archivateCampaign();
   });
 });

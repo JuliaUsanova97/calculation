@@ -4,7 +4,7 @@ import {
   submitThirdStep,
   submitFourthStep,
   submitFifthStep,
-  archivateCampaign,
+  archivateCampaignIfExist,
   futureFirstDate,
   futureSecondDate,
   campaignName,
@@ -12,6 +12,11 @@ import {
   numberOfDisplay,
   imageName,
 } from "../../../cypress/e2e/lib/functions";
+const validCardNumber = "4242424242424242";
+const invalidCardNumber = "4000000000009995";
+const expDate = "0255";
+const cvc = "123";
+
 
 
 describe("6th step of creating campaign", () => {
@@ -23,14 +28,7 @@ describe("6th step of creating campaign", () => {
     cy.get('[type="submit"]').contains("Anmelden").click();
     cy.url().should("include", "/dashboard/campaigns", { timeout: 10000 });
 
-    cy.get('[class="sc-1jlncfu-1 loqbsV"]')
-      .eq(0)
-      .invoke("text")
-      .then((text) => {
-        if (text === "Entwurf") {
-          archivateCampaign();
-        }
-      });
+    archivateCampaignIfExist();
 
     cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
 
@@ -41,7 +39,7 @@ describe("6th step of creating campaign", () => {
     submitFifthStep();
   });
 
-  it("Verify that values are disaplyed correctly", () => {
+  it("Verify that values are disaplyed correctly and succesfully payment after failed", () => {
     cy.contains("h2", "6 / 6 Kampagnenzusammenfassung").should("exist");
 
     cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(0).contains(campaignName);
@@ -54,37 +52,31 @@ describe("6th step of creating campaign", () => {
     cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(3).contains(`${capacity}%`);
     cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(4).contains(`${imageName}.mp4`);
     cy.get('[class="sc-1ubqj8f-2 gwLGzD"]').eq(5).contains("Video");
+
+    enterCardValues(invalidCardNumber);
+      cy.contains('Das Guthaben auf Ihrer Karte ist nicht ausreichend.', { timeout: 15000 });
+      cy.get(".hxknzH").click();
+      cy.get('body').click(0,0);
+    enterCardValues(validCardNumber);
+      cy.contains('Deine Kampagne wurde erfolgreich erstellt und wird jetzt von unserem Team geprüft. Die Buchungsbestätigung erhältst du per E-Mail.',{ timeout: 15000 });
   });
 
-    it("Successfully payment with credit card", () => {
-      cy.contains('button','Kampagne buchen').click();
-      cy.wait(5000);
-      cy.get('[role="dialog"]').should('exist');
-      cy.contains('button','Jetzt zahlen').should('be.disabled');
-      cy.get('[placeholder="Name des Kreditkartenbesitzers"]').click().type('test');
-      getIframeBody(0).find('input[name="cardnumber"]').type('4242424242424242');
-      getIframeBody(1).find('input[name="exp-date"]').type('0255');
-      getIframeBody(2).find('input[name="cvc"]').type('123');
-      cy.contains('button','Jetzt zahlen').should('not.be.disabled').click();
-      cy.wait(15000);
-      cy.contains('Deine Kampagne wurde erfolgreich erstellt und wird jetzt von unserem Team geprüft. Die Buchungsbestätigung erhältst du per E-Mail.');
 
-  });
 
-  it.only("Failed payment with credit card", () => {
-    cy.contains('button','Kampagne buchen').click();
-    cy.wait(5000);
+function enterCardValues(cardNumber){
+  cy.contains('button','Kampagne buchen').click();
     cy.get('[role="dialog"]').should('exist');
     cy.contains('button','Jetzt zahlen').should('be.disabled');
-    cy.get('[placeholder="Name des Kreditkartenbesitzers"]').click().type('test');
-    getIframeBody(0).find('input[name="cardnumber"]').type('4000000000009995');
-    getIframeBody(1).find('input[name="exp-date"]').type('0255');
-    getIframeBody(2).find('input[name="cvc"]').type('123');
+    cy.get('[placeholder="Name des Kreditkartenbesitzers"]')
+      .should('not.be.disabled', { timeout: 3000 })
+      .click()
+      .type('test');
+    getIframeBody(0).find('input[name="cardnumber"]').type(cardNumber);
+    getIframeBody(1).find('input[name="exp-date"]').type(expDate);
+    getIframeBody(2).find('input[name="cvc"]').type(cvc);
     cy.contains('button','Jetzt zahlen').should('not.be.disabled').click();
-    cy.wait(15000);
-    cy.contains('Das Guthaben auf Ihrer Karte ist nicht ausreichend.');
-
-});
+  
+}
 
 
 
@@ -97,7 +89,6 @@ function getIframeDocument(i) {
       .should('not.be.undefined')
       .then(cy.wrap);
   }
-
 
 
 });
