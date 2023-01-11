@@ -32,7 +32,7 @@ describe("5th step of creating campaign", () => {
     cy.contains("button", "Zurück").should("not.be.disabled").click();
     cy.contains("h2", "4 / 6 Kapazität").should("exist");
     cy.contains("button", "Weiter").click();
-    cy.contains("button", "0 Displays ausgewählt").click();
+    cy.contains("button", "0 Ad Units ausgewählt").click();
     cy.get('[role="dialog"]').should("be.visible");
     cy.wait(1000);
     cy.get('[aria-label="grid"]').scrollTo("0%", `${randomNumber}%`);
@@ -43,7 +43,7 @@ describe("5th step of creating campaign", () => {
       .click({ force: true });
     cy.contains("button", "Zur Kampagne hinzufügen").click();
     cy.get('[role="dialog"]').should("not.exist");
-    cy.contains("button", "1 Display ausgewählt");
+    cy.contains("button", "1 Ad Unit ausgewählt");
     cy.get('[aria-label="Sieht richtig aus"]').should("exist");
     cy.contains("button", "Weiter").should("not.be.disabled").click();
     cy.contains("h2", "6 / 6 Kampagnenzusammenfassung", { timeout: 15000 }).should("exist");

@@ -53,13 +53,13 @@ export function submitThirdStep() {
 
 export function submitFourthStep() {
   cy.get("select").select(
-    `Ziel ${capacity}&nbsp;% der Spielzeit aller ausgewählten Displays`
+    `Ziel ${capacity}&nbsp;% der Spielzeit aller ausgewählten Ad Units`
   );
   cy.contains("button", "Weiter").should("not.be.disabled").click();
 }
 
 export function submitFifthStep() {
-  cy.contains("button", "0 Displays ausgewählt").click();
+  cy.contains("button", "0 Ad Units ausgewählt").click();
   cy.get('[role="dialog"]').should("be.visible");
   cy.wait(1000);
   cy.get('[aria-label="grid"]').scrollTo("0%", `${randomNumber}%`);
@@ -68,7 +68,7 @@ export function submitFifthStep() {
     .first()
     .find('[class="sc-l2ahyy-2 bpSloI"]')
     .click({ force: true });
-  cy.contains("button", `${numberOfDisplay} Display ausgewählt`, { timeout: 1000 });
+  cy.contains("button", `${numberOfDisplay} Ad Unit ausgewählt`, { timeout: 1000 });
   cy.contains("button", "Zur Kampagne hinzufügen").click();
   cy.contains("button", "Weiter").should("not.be.disabled").click();
   cy.contains("h2", "6 / 6 Kampagnenzusammenfassung", { timeout: 15000 }).should("exist");

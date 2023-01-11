@@ -31,7 +31,7 @@ describe("4th step of creating campaign", () => {
     cy.contains("button", "Weiter").click();
     cy.contains(
       "option",
-      "Wie viel Displaykapazität möchtest du buchen?"
+      "Wie viel Ad Unit Kapazität möchtest du buchen?"
     ).should("exist");
 
     for (let i = 0; i < 5; i++) {
@@ -41,6 +41,6 @@ describe("4th step of creating campaign", () => {
     cy.get("select").select(`0`);
     cy.get('[aria-label="Sieht richtig aus"]').should("exist");
     cy.contains("button", "Weiter").should("not.be.disabled").click();
-    cy.contains("h2", "5 / 6 Displays").should("exist");
+    cy.contains("h2", "5 / 6 Ad Units").should("exist");
   });
 });
