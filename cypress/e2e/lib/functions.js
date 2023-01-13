@@ -28,12 +28,12 @@ export function archivateCampaignIfExist() {
   });
 }
 
-export function submitFirstStep() {
+export function submitFirstStepOfCreatingCampaign() {
   cy.get('[name="name"]').clear().type(campaignName).should('have.value',campaignName);
   cy.contains("button", "Weiter").should("be.not.disabled").click();
 }
 
-export function submitSecondStep() {
+export function submitSecondStepOfCreatingCampaign() {
   cy.get('[placeholder="dd/mm/yyyy"]').eq(0).click();
   cy.get(`[aria-label='${futureFirstDate}']`).click();
   cy.get(`[aria-label='${futureSecondDate}']`).click();
@@ -41,7 +41,7 @@ export function submitSecondStep() {
   cy.contains("button", "Weiter").should("not.be.disabled").click();
 }
 
-export function submitThirdStep() {
+export function submitThirdStepOfCreatingCampaign() {
   cy.contains("button", "Bilder").click();
   cy.contains("button", "Hochladen").click();
   cy.get("input[type=file]").selectFile(`cypress/fixtures/${imageName}.jpg`, {
@@ -51,14 +51,14 @@ export function submitThirdStep() {
   cy.contains("button", "Weiter").click();
 }
 
-export function submitFourthStep() {
+export function submitFourthStepOfCreatingCampaign() {
   cy.get("select").select(
     `Ziel ${capacity}&nbsp;% der Spielzeit aller ausgewählten Ad Units`
   );
   cy.contains("button", "Weiter").should("not.be.disabled").click();
 }
 
-export function submitFifthStep() {
+export function submitFifthStepOfCreatingCampaign() {
   cy.contains("button", "0 Ad Units ausgewählt").click();
   cy.get('[role="dialog"]').should("be.visible");
   cy.wait(1000);

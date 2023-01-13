@@ -1,4 +1,4 @@
-import { archivateCampaignIfExist,submitFirstStep } from "../../../cypress/e2e/lib/functions";
+import { archivateCampaignIfExist,submitFirstStepOfCreatingCampaign } from "../../../cypress/e2e/lib/functions";
 
 const dayjs = require("dayjs");
 const i = 18;
@@ -20,7 +20,7 @@ describe("2nd step of creating campaign", () => {
     archivateCampaignIfExist();
 
     cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
-    submitFirstStep();
+    submitFirstStepOfCreatingCampaign();
   });
 
   it("Verify that start/end date are empty and button is disabled", () => {

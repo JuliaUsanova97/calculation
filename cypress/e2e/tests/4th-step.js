@@ -1,8 +1,8 @@
 import {
   archivateCampaignIfExist,
-  submitFirstStep,
-  submitSecondStep,
-  submitThirdStep,
+  submitFirstStepOfCreatingCampaign,
+  submitSecondStepOfCreatingCampaign,
+  submitThirdStepOfCreatingCampaign,
 } from "../../../cypress/e2e/lib/functions";
 const i = 5;
 
@@ -19,9 +19,9 @@ describe("4th step of creating campaign", () => {
 
     cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
 
-    submitFirstStep();
-    submitSecondStep();
-    submitThirdStep();
+    submitFirstStepOfCreatingCampaign();
+    submitSecondStepOfCreatingCampaign();
+    submitThirdStepOfCreatingCampaign();
   });
 
   it("Verify that user can select any value for field and check redirect to the 5th step", () => {

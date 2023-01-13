@@ -1,9 +1,9 @@
 import {
   archivateCampaignIfExist,
-  submitFirstStep,
-  submitSecondStep,
-  submitThirdStep,
-  submitFourthStep,
+  submitFirstStepOfCreatingCampaign,
+  submitSecondStepOfCreatingCampaign,
+  submitThirdStepOfCreatingCampaign,
+  submitFourthStepOfCreatingCampaign,
 } from "../../../cypress/e2e/lib/functions";
 
 const randomNumber = Math.floor(Math.random() * (90 - 10)) + 10;
@@ -21,10 +21,10 @@ describe("5th step of creating campaign", () => {
 
     cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
 
-    submitFirstStep();
-    submitSecondStep();
-    submitThirdStep();
-    submitFourthStep();
+    submitFirstStepOfCreatingCampaign();
+    submitSecondStepOfCreatingCampaign();
+    submitThirdStepOfCreatingCampaign();
+    submitFourthStepOfCreatingCampaign();
   });
 
   it("Verify that user can add random ad unit from the list", () => {

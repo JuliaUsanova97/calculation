@@ -1,9 +1,9 @@
 import {
-  submitFirstStep,
-  submitSecondStep,
-  submitThirdStep,
-  submitFourthStep,
-  submitFifthStep,
+  submitFirstStepOfCreatingCampaign,
+  submitSecondStepOfCreatingCampaign,
+  submitThirdStepOfCreatingCampaign,
+  submitFourthStepOfCreatingCampaign,
+  submitFifthStepOfCreatingCampaign,
   archivateCampaignIfExist,
   futureFirstDate,
   futureSecondDate,
@@ -30,11 +30,11 @@ describe("6th step of creating campaign", () => {
 
     cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
 
-    submitFirstStep();
-    submitSecondStep();
-    submitThirdStep();
-    submitFourthStep();
-    submitFifthStep();
+    submitFirstStepOfCreatingCampaign();
+    submitSecondStepOfCreatingCampaign();
+    submitThirdStepOfCreatingCampaign();
+    submitFourthStepOfCreatingCampaign();
+    submitFifthStepOfCreatingCampaign();
   });
 
   it("Verify that values are disaplyed correctly and checking failed payment", () => {
