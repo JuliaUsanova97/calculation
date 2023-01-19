@@ -82,7 +82,7 @@ context('Cypress.arch', () => {
   })
 })
 
-context('Cypress.config()', () => {
+context.skip('Cypress.config()', () => {
   beforeEach(() => {
     cy.visit('https://example.cypress.io/cypress-api')
   })

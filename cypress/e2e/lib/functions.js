@@ -73,3 +73,4 @@ export function submitFifthStepOfCreatingCampaign() {
   cy.contains("button", "Weiter").should("not.be.disabled").click();
   cy.contains("h2", "6 / 6 Kampagnenzusammenfassung", { timeout: 15000 }).should("exist");
 }
+

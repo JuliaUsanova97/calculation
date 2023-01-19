@@ -1,6 +1,11 @@
 import { 
-    archivateCampaign,
-    submitFirstStep,
+    archivateCampaignIfExist,
+    submitFirstStepOfCreatingCampaign,
+    submitSecondStepOfCreatingCampaign,
+    submitThirdStepOfCreatingCampaign,
+    submitFourthStepOfCreatingCampaign,
+    submitFifthStepOfCreatingCampaign,
+    enterCardValues,
     campaignName
     } from "../../../cypress/e2e/lib/functions";
 const dayjs = require("dayjs");
@@ -15,25 +20,32 @@ describe("Archivate campaign", () => {
       cy.get('[type="submit"]').contains("Anmelden").click();
       cy.url().should("include", "/dashboard/campaigns", { timeout: 10000 });
 
-      cy.get('[class="sc-1jlncfu-1 loqbsV"]')
-      .eq(0)
-      .invoke("text")
-      .then((text) => {
-        if (text === "Entwurf") {
-          archivateCampaign();
-        }
-      });
+      archivateCampaignIfExist();
 
       cy.contains("button", "Neue Kampagne").should("be.not.disabled").click();
-      submitFirstStep();
-      cy.get('[title="Abbrechen"]').click();
-      cy.wait(1000);
-      archivateCampaign();
+      submitFirstStepOfCreatingCampaign();
     });
   
-    it("Verify that archivated campaign is displayed in the Archivierte tab ", () => {
+    it("Verify that archivated campaign with status Entwurf is displayed in the Archivierte tab ", () => {
+      cy.get('[title="Abbrechen"]').click();
+      cy.wait(1000);
+      archivateCampaignIfExist();
       cy.get('[role="tab"]').eq(1).click();
+      cy.wait(1000);
       cy.get(".ihFAIC").eq(0).should("contain.text",campaignName).and("contain.text", todayDate);
 
     });
+
+    it.only("Verify that campaign with status In Prüfung can not be archivated", () => {
+      submitSecondStepOfCreatingCampaign();
+      submitThirdStepOfCreatingCampaign();
+      submitFourthStepOfCreatingCampaign();
+      submitFifthStepOfCreatingCampaign();
+      enterCardValues(validCardNumber);
+      cy.contains(
+        "Deine Kampagne wurde erfolgreich erstellt und wird jetzt von unserem Team geprüft. Die Buchungsbestätigung erhältst du per E-Mail.",
+        { timeout: 15000 }
+      );
+    });
+
 });

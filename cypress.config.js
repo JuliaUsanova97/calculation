@@ -5,7 +5,6 @@ module.exports = defineConfig({
   defaultCommandTimeout: 10000,
 
   e2e: {
-    baseUrl: 'https://thefuture:ofadvertising@app.curryfresh.de',
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
