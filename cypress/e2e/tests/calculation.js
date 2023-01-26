@@ -18,48 +18,66 @@ describe("1st calculation case", () => {
     cy.contains("button", "Accepter et fermer").click();
     cy.wait(3000);
 
+    /*     cy.get("body").then($body => {
+      if ($body.find("button[data-cy=appDrawerOpener]").length > 0) {   
+          //evaluates as true
+      }
+  }); */
+
+    /*   cy.get('[id="LOU_PLAYER_MAINFRAME"]').then($frame => {
+    const content = $frame.contents();
+    if(content.find('.my-button').length){
+      content.find('.my-button').click();
+    }
+  }); */
+
     getIframeBody().find('[class="sc-gPpHY ilrxnI"]').click();
 
     cy.wait(1000);
 
-    //cy.get("input[id=borrowingType-Seul]").should("not.be.checked");
-    cy.findByText("Seul").click();
-    cy.findByText("Un investissement locatif").click();
-    cy.findByText("Hébergé gratuitement").click();
-    cy.findByPlaceholderText("Age").clear().type("22");
-    cy.findByText("Non").click();
-    cy.findByPlaceholderText("Ex: 28 rue Beautreillis 75004 Paris")
-      .clear()
-      .type("210");
-    cy.get('[role="option"]', { timeout: 1000 }).eq(0).click();
-    cy.findByText("Travailleur non salarié").click();
-    cy.findByText("Depuis plus de 3 ans").click();
-    cy.findByText("Suivant").should("not.be.disabled").click();
+    cy.contains("button", "Réinitialiser").click();
+    cy.wait(1000);
+
+    //1st step
+
+    firstStep(
+      "Seul",
+      "Un investissement locatif",
+      "Hébergé gratuitement",
+      "Travailleur non salarié"
+    );
 
     //2step
-    cy.findByPlaceholderText("Revenus nets mensuels").clear().type("5000");
-    cy.findByText("Nb mois").click();
-    cy.get('[tabindex="-1"]').eq(0).click();
-    cy.findAllByText("Oui").eq(0).click();
-    cy.get('[placeholder="Primes annuelles"]').eq(0).clear().type("2000");
-    cy.get('[placeholder="Primes annuelles"]').eq(1).clear().type("1000");
-    cy.findAllByText("Non").eq(1).click();
-    cy.findByText("Suivant").should("not.be.disabled").click();
+
+    secondStep("Revenus nets mensuels", "Primes annuelles", "Primes annuelles");
 
     //3step
-    cy.findAllByText("Oui").eq(0).click();
-    cy.findAllByText("Crédit immobilier").click();
-    cy.findAllByText("Crédit consommation").click();
-    cy.findByPlaceholderText("Montant par mois", { timeout: 1000 })
+
+    thirdStep("Montant par mois", "Montant par mois");
+    //4step
+
+    fourthStep("Valeur nette", "Apport maximum");
+
+    //results
+    cy.url().should("include", "/mortgage-calculator/result", {
+      timeout: 10000,
+    });
+    cy.get('[class="styles__OverviewCardsContainer-sc-c90lrf-1 hAGWrL"]')
       .eq(0)
-      .clear()
-      .type("200");
-    cy.findByPlaceholderText("Montant par mois", { timeout: 1000 })
+      .should("have.length", 1);
+    cy.get('[class="styles__OverviewCardContainer-sc-o8j682-0 iYckIg"]')
+      .eq(0)
+      .children()
+      .should("have.length", 4);
+    cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+      .eq(0)
+      .contains("Votre capacité d’emprunt sur 20 ans");
+    cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
       .eq(1)
-      .clear()
-      .type("200");
-    cy.findAllByText("Non").eq(1).click();
-    cy.findByText("Suivant").should("not.be.disabled").click();
+      .contains("Votre remboursement d’emprunt");
+    cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+      .eq(2)
+      .contains("Votre locataire vous remboursera");
   });
 
   function getIframeDocument() {
@@ -72,3 +90,48 @@ describe("1st calculation case", () => {
       .then(cy.wrap);
   }
 });
+
+function firstStep(type1, property, situation, situation2) {
+  cy.findByText(type1).click();
+  cy.findByText(property).click();
+  cy.findByText(situation).click();
+  cy.findByPlaceholderText("Age").clear().type("22");
+  cy.findByText("Non").click();
+  cy.findByPlaceholderText("Ex: 28 rue Beautreillis 75004 Paris")
+    .clear()
+    .type("210");
+  cy.get('[role="option"]', { timeout: 1000 }).eq(0).click();
+  cy.findByText(situation2).click();
+  cy.findByText("Depuis plus de 3 ans").click();
+  cy.findByText("Suivant").should("not.be.disabled").click();
+}
+
+function secondStep(monthlyNetIncome, bonus1, bonus2) {
+  cy.findByPlaceholderText(monthlyNetIncome).clear().type("5000");
+  cy.findByText("Nb mois").click();
+  cy.get('[tabindex="-1"]').eq(0).click();
+  cy.findAllByText("Oui").eq(0).click();
+  cy.get(bonus1).eq(0).clear().type("2000");
+  cy.get(bonus2).eq(1).clear().type("1000");
+  cy.findAllByText("Non").eq(1).click();
+  cy.findByText("Suivant").should("not.be.disabled").click();
+}
+
+function thirdStep(repayment1, repayment2) {
+  cy.findAllByText("Oui").eq(0).click();
+  cy.findAllByText().click();
+  cy.findAllByText("Crédit consommation").click();
+  cy.findAllByPlaceholderText(repayment1).eq(0).clear().type("150");
+  cy.wait(100);
+  cy.findAllByPlaceholderText(repayment2).eq(1).clear().type("100");
+  cy.findAllByText("Non").eq(1).click();
+  cy.findByText("Suivant").should("not.be.disabled").click();
+}
+
+function fourthStep(netValue, maximumDownpayment) {
+  cy.findByText("Montant moyen").click();
+  cy.get('[tabindex="-1"]').eq(1).click();
+  cy.findByPlaceholderText(netValue).type("9000");
+  cy.findByPlaceholderText(maximumDownpayment).type("20000");
+  cy.findByText("Suivant").should("not.be.disabled").click();
+}
