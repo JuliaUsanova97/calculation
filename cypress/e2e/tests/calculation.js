@@ -13,22 +13,13 @@ describe("1st calculation case", () => {
     cy.visit(`${Cypress.env("WEBSITE_URL")}/mortgage-calculator`);
     cy.contains("Simulez votre capacité de financement en 5 min");
     cy.contains("button", "Accepter et fermer").click();
-    cy.wait(3000);
+    cy.wait(5000);
 
-    /*     cy.get("body").then($body => {
-      if ($body.find("button[data-cy=appDrawerOpener]").length > 0) {   
-          //evaluates as true
+    cy.get("body").then(($body) => {
+      if ($body.find('[id="LOU_PLAYER_MAINFRAME"]').length > 0) {
+        getIframeBody().find('[class="sc-gPpHY ilrxnI"]').click();
       }
-  }); */
-
-    /*   cy.get('[id="LOU_PLAYER_MAINFRAME"]').then($frame => {
-    const content = $frame.contents();
-    if(content.find('.my-button').length){
-      content.find('.my-button').click();
-    }
-  }); */
-
-    getIframeBody().find('[class="sc-gPpHY ilrxnI"]').click();
+    });
 
     cy.wait(1000);
     cy.contains("button", "Réinitialiser").click();
