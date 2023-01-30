@@ -48,7 +48,7 @@ describe("1st calculation case", () => {
     cy.findByText("Non").click();
     cy.findByPlaceholderText("Ex: 28 rue Beautreillis 75004 Paris")
       .clear()
-      .type("200");
+      .type("210");
     cy.get('[role="option"]', { timeout: 1000 }).eq(0).click();
     cy.findByPlaceholderText("Loyer mensuel").type("200");
     cy.findByText("Travailleur non salarié").click();
@@ -58,6 +58,40 @@ describe("1st calculation case", () => {
     thirdStep("200", "100");
     fourthStep("9000", "70000");
     results2();
+  });
+
+  it("Calculation for third case", () => {
+    cy.findByText("Seul").click();
+    cy.findByText("Votre résidence principale").click();
+    cy.findByText("Hébergé gratuitement").click();
+    cy.findByPlaceholderText("Age").clear().type("22");
+    cy.findByText("Non").click();
+    cy.findByPlaceholderText("Ex: 28 rue Beautreillis 75004 Paris")
+      .clear()
+      .type("210");
+    cy.get('[role="option"]', { timeout: 1000 }).eq(0).click();
+    cy.findByText("Salarié du privé").click();
+    cy.findByText("En CDI").click();
+    cy.findByText("Hors période d'essai").click({ force: true });
+    cy.findByText("Suivant").should("not.be.disabled").click();
+    secondStep("2000", "1000", "20000");
+    thirdStep("500", "100");
+    fourthStep("22222", "3000");
+    results3();
+  });
+
+  it.only("Calculation for fourth case", () => {
+    firstStep(
+      "Seul",
+      "Votre résidence principale",
+      "Hébergé gratuitement",
+      "Travailleur non salarié",
+      "Depuis plus de 3 ans"
+    );
+    secondStep("2000", "2000", "10000");
+    thirdStep("1000", "1500");
+    fourthStep("22222", "3000");
+    results4();
   });
 });
 
@@ -183,4 +217,37 @@ function results2() {
   cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
     .eq(5)
     .contains("Votre locataire vous remboursera");
+}
+
+function results3() {
+  cy.url().should("include", "/mortgage-calculator/result", {
+    timeout: 10000,
+  });
+  cy.get('[class="styles__OverviewCardsContainer-sc-c90lrf-1 hAGWrL"]')
+    .eq(0)
+    .children()
+    .should("have.length", 1);
+  cy.get('[class="styles__OverviewCardContainer-sc-o8j682-0 iYckIg"]')
+    .eq(0)
+    .children()
+    .should("have.length", 3);
+  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+    .eq(0)
+    .contains("Votre capacité d’emprunt sur 25 ans");
+  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+    .eq(1)
+    .contains("Votre remboursement d’emprunt");
+}
+
+function results4() {
+  cy.url().should("include", "/mortgage-calculator/result", {
+    timeout: 10000,
+  });
+  cy.get('[class="styles__RejectCardContainer-sc-a1qy4r-1 ARDvD"]')
+    .eq(0)
+    .children()
+    .should("have.length", 1);
+  cy.get('[class="styles__ListOfReasons-sc-a1qy4r-3 kCXPRE"]').contains(
+    "Apport insuffisant"
+  );
 }
