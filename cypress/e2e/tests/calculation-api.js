@@ -1,4 +1,4 @@
-describe("Successfully results for two investors", () => {
+describe("Successfully logs in from api", () => {
   beforeEach(() => {
     cy.request({
       method: "POST",
@@ -24,13 +24,13 @@ describe("Successfully results for two investors", () => {
 
   it("Calculation for first case", () => {
     firstStep(
-      "A deux",
+      "Seul",
       "Un investissement locatif",
       "Hébergé gratuitement",
       "Travailleur non salarié",
       "Depuis plus de 3 ans"
     );
-    secondStep("5000", "2000", "1000", "1500");
+    secondStep("5000", "2000", "1000");
     thirdStep("150", "100");
     fourthStep("9000", "20000");
     results1();
@@ -38,62 +38,40 @@ describe("Successfully results for two investors", () => {
   });
 
   it("Calculation for second case", () => {
-    cy.findByText("A deux").click();
+    cy.findByText("Seul").click();
     cy.findByText("Votre résidence principale").click();
     cy.findByText("Locataire de votre logement").click();
-    cy.findAllByPlaceholderText("Age").eq(0).clear().type("22");
-    cy.findAllByPlaceholderText("Age").eq(1).clear().type("25");
+    cy.findByPlaceholderText("Age").clear().type("22");
     cy.findByText("Non").click();
     cy.findByPlaceholderText("Ex: 28 rue Beautreillis 75004 Paris")
       .clear()
       .type("210");
     cy.get('[role="option"]', { timeout: 1000 }).eq(0).click();
-    cy.findAllByPlaceholderText("Loyer mensuel").type("500");
-    cy.findAllByText("Travailleur non salarié").eq(0).click();
-    cy.findAllByText("Depuis plus de 3 ans").eq(0).click();
-    cy.findAllByText("Travailleur non salarié").eq(1).click();
-    cy.findAllByText("Depuis plus de 3 ans").eq(1).click();
+    cy.findByPlaceholderText("Loyer mensuel").type("200");
+    cy.findByText("Travailleur non salarié").click();
+    cy.findByText("Depuis plus de 3 ans").click({ force: true });
     cy.findByText("Suivant").should("not.be.disabled").click();
-    secondStep("5000", "15000", "5000", "1500");
-    thirdStep("150", "200");
-    fourthStep("9000", "50000");
+    secondStep("10000", "150", "200");
+    thirdStep("200", "100");
+    fourthStep("9000", "70000");
     results2();
   });
 
   it("Calculation for third case", () => {
-    cy.findByText("A deux").click();
+    cy.findByText("Seul").click();
     cy.findByText("Votre résidence principale").click();
     cy.findByText("Hébergé gratuitement").click();
-    cy.findAllByPlaceholderText("Age").eq(0).clear().type("22");
-    cy.findAllByPlaceholderText("Age").eq(1).clear().type("25");
+    cy.findByPlaceholderText("Age").clear().type("22");
     cy.findByText("Non").click();
     cy.findByPlaceholderText("Ex: 28 rue Beautreillis 75004 Paris")
       .clear()
       .type("210");
     cy.get('[role="option"]', { timeout: 1000 }).eq(0).click();
-    cy.findAllByText("Salarié du privé").eq(0).click();
-    cy.findAllByText("En CDI").eq(0).click();
-    cy.findAllByText("Hors période d'essai").eq(0).click();
-    cy.findAllByText("Salarié du privé").eq(1).click();
-    cy.findAllByText("En CDI").eq(1).click();
-    cy.findAllByText("Hors période d'essai").eq(1).click();
+    cy.findByText("Salarié du privé").click();
+    cy.findByText("En CDI").click();
+    cy.findByText("Hors période d'essai").click({ force: true });
     cy.findByText("Suivant").should("not.be.disabled").click();
-
-    cy.findByPlaceholderText("Revenus nets mensuels").clear().type("2000");
-    cy.findAllByText("Nb mois").eq(0).click();
-    cy.get('[tabindex="-1"]').eq(0).click();
-    cy.findAllByText("Oui").eq(0).click();
-    cy.findAllByPlaceholderText("Primes annuelles").eq(0).clear().type("0");
-    cy.findAllByPlaceholderText("Primes annuelles").eq(1).clear().type("10000");
-    cy.findAllByPlaceholderText("Revenus nets mensuels")
-      .eq(1)
-      .clear()
-      .type("2000");
-    cy.findAllByText("Nb mois").eq(1).click();
-    cy.get('[tabindex="-1"]').eq(0).click();
-    cy.findAllByText("Non").eq(1).click();
-    cy.findAllByText("Non").eq(2).click();
-    cy.findByText("Suivant").should("not.be.disabled").click();
+    secondStep("2000", "1000", "20000");
     thirdStep("500", "100");
     fourthStep("22222", "3000");
     results3();
@@ -101,14 +79,14 @@ describe("Successfully results for two investors", () => {
 
   it("Calculation for fourth case", () => {
     firstStep(
-      "A deux",
+      "Seul",
       "Votre résidence principale",
       "Hébergé gratuitement",
       "Travailleur non salarié",
       "Depuis plus de 3 ans"
     );
-    secondStep("1000", "2000", "1500", "1200");
-    thirdStep("1500", "2000");
+    secondStep("2000", "2000", "10000");
+    thirdStep("1000", "1500");
     fourthStep("22222", "3000");
     results4();
   });
@@ -118,38 +96,27 @@ function firstStep(type1, property, situation, situation2, precisely) {
   cy.findByText(type1).click();
   cy.findByText(property).click();
   cy.findByText(situation).click();
-  cy.findAllByPlaceholderText("Age").eq(0).clear().type("22");
-  cy.findAllByPlaceholderText("Age").eq(1).clear().type("25");
+  cy.findByPlaceholderText("Age").clear().type("22");
   cy.findByText("Non").click();
   cy.findByPlaceholderText("Ex: 28 rue Beautreillis 75004 Paris")
     .clear()
     .type("200");
   cy.get('[role="option"]', { timeout: 1000 }).eq(0).click();
-  cy.findAllByText(situation2).eq(0).click();
-  cy.findAllByText(precisely).eq(0).click({ force: true });
-  cy.findAllByText(situation2).eq(1).click();
-  cy.findAllByText(precisely).eq(1).click({ force: true });
+  cy.findByText(situation2).click();
+  cy.findByText(precisely).click({ force: true });
   cy.findByText("Suivant").should("not.be.disabled").click();
 }
 
-function secondStep(monthlyNetIncome1, bonus1, bonus2, monthlyNetIncome2) {
+function secondStep(monthlyNetIncome, bonus1, bonus2) {
   cy.findByPlaceholderText("Revenus nets mensuels")
     .clear()
-    .type(monthlyNetIncome1);
+    .type(monthlyNetIncome);
   cy.findByText("Nb mois").click();
   cy.get('[tabindex="-1"]').eq(0).click();
   cy.findAllByText("Oui").eq(0).click();
   cy.findAllByPlaceholderText("Primes annuelles").eq(0).clear().type(bonus1);
   cy.findAllByPlaceholderText("Primes annuelles").eq(1).clear().type(bonus2);
   cy.findAllByText("Non").eq(1).click();
-  cy.findAllByPlaceholderText("Revenus nets mensuels")
-    .eq(1)
-    .clear()
-    .type(monthlyNetIncome2);
-  cy.findAllByText("Nb mois").eq(1).click();
-  cy.get('[tabindex="-1"]').eq(0).click();
-  cy.findAllByText("Non").eq(2).click();
-  cy.findAllByText("Non").eq(3).click();
   cy.findByText("Suivant").should("not.be.disabled").click();
 }
 

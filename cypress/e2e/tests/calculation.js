@@ -1,29 +1,25 @@
-describe("1st calculation case", () => {
+describe("Successfully results for one investor", () => {
   beforeEach(() => {
-    Cypress.on("uncaught:exception", (err, runnable) => {
-      return false;
+    cy.request({
+      method: "POST",
+      url: Cypress.env("API_URL"),
+
+      headers: {
+        "Content-Type": "application/json",
+        "auth-method": "email",
+      },
+      body: {
+        email: Cypress.env("EMAIL"),
+        password: Cypress.env("PASSWORD"),
+      },
+    }).then((response) => {
+      cy.setCookie("jwt-token", response.body.token);
     });
-    cy.visit(`${Cypress.env("WEBSITE_URL")}/sign-in`);
-    cy.wait(1000);
-    cy.contains("button", "Se connecter").click();
-    cy.get('[name="email"]').type(Cypress.env("EMAIL"));
-    cy.get('[name="password"]').type(Cypress.env("PASSWORD"));
-    cy.contains("button", "Se connecter").click();
-    cy.wait(3000);
+    cy.reload();
+
     cy.visit(`${Cypress.env("WEBSITE_URL")}/mortgage-calculator`);
-    cy.contains("Simulez votre capacité de financement en 5 min");
-    cy.contains("button", "Accepter et fermer").click();
-    cy.wait(5000);
-
-    cy.get("body").then(($body) => {
-      if ($body.find('[id="LOU_PLAYER_MAINFRAME"]').length > 0) {
-        getIframeBody().find('[class="sc-gPpHY ilrxnI"]').click();
-      }
-    });
-
-    cy.wait(1000);
+    cy.contains("button", "Accepter et fermer", { timeout: 5000 }).click();
     cy.contains("button", "Réinitialiser").click();
-    cy.wait(1000);
   });
 
   it("Calculation for first case", () => {
@@ -38,6 +34,7 @@ describe("1st calculation case", () => {
     thirdStep("150", "100");
     fourthStep("9000", "20000");
     results1();
+    cy.clearCookies();
   });
 
   it("Calculation for second case", () => {
@@ -80,7 +77,7 @@ describe("1st calculation case", () => {
     results3();
   });
 
-  it.only("Calculation for fourth case", () => {
+  it("Calculation for fourth case", () => {
     firstStep(
       "Seul",
       "Votre résidence principale",
@@ -94,16 +91,6 @@ describe("1st calculation case", () => {
     results4();
   });
 });
-
-function getIframeDocument() {
-  return cy.get("iframe").its("0.contentDocument").should("exist");
-}
-function getIframeBody() {
-  return getIframeDocument()
-    .its("body")
-    .should("not.be.undefined")
-    .then(cy.wrap);
-}
 
 function firstStep(type1, property, situation, situation2, precisely) {
   cy.findByText(type1).click();
