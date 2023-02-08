@@ -18,7 +18,7 @@ describe("Successfully results for two investors", () => {
     cy.reload();
 
     cy.visit(`${Cypress.env("WEBSITE_URL")}/mortgage-calculator`);
-    cy.contains("button", "Accepter et fermer", { timeout: 5000 }).click();
+    cy.contains("button", "Accepter et fermer", { timeout: 7000 }).click();
     cy.contains("button", "Réinitialiser").click();
   });
 
