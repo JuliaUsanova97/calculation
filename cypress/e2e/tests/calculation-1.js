@@ -153,19 +153,19 @@ function results1() {
     .eq(0)
     .children()
     .should("have.length", 1);
-  cy.get('[class="styles__OverviewCardContainer-sc-o8j682-0 iYckIg"]')
+  cy.get('[class="styles__OverviewRowsContainer-sc-1eo7w0k-0 evpIme"]')
     .eq(0)
     .children()
-    .should("have.length", 4);
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+    .should("have.length", 3);
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(0)
-    .contains("Votre capacité d’emprunt sur 20 ans");
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+    .contains("Votre budget total");
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(1)
     .contains("Votre remboursement d’emprunt");
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(2)
-    .contains("Votre locataire vous remboursera");
+    .contains("Loyer payé par votre locataire");
 }
 
 function results2() {
@@ -176,34 +176,34 @@ function results2() {
     .eq(0)
     .children()
     .should("have.length", 2);
-  cy.get('[class="styles__OverviewCardContainer-sc-o8j682-0 iYckIg"]')
+  cy.get('[class="styles__OverviewRowsContainer-sc-1eo7w0k-0 evpIme"]')
     .eq(0)
     .children()
-    .should("have.length", 4);
-  cy.get('[class="styles__OverviewCardContainer-sc-o8j682-0 iYckIg"]')
+    .should("have.length", 3);
+  cy.get('[class="styles__OverviewRowsContainer-sc-1eo7w0k-0 evpIme"]')
     .eq(1)
     .children()
-    .should("have.length", 4);
+    .should("have.length", 3);
 
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(0)
-    .contains("Votre capacité d’emprunt sur 20 ans");
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+    .contains("Votre budget total");
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(1)
     .contains("Votre remboursement d’emprunt");
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(2)
-    .contains("Votre locataire vous remboursera");
+    .contains("Loyer payé par votre locataire");
 
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(3)
-    .contains("Votre capacité d’emprunt sur 25 ans");
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+    .contains("Votre budget total");
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(4)
     .contains("Votre remboursement d’emprunt");
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(5)
-    .contains("Votre locataire vous remboursera");
+    .contains("Vous n’avez pas de locataire");
 }
 
 function results3() {
@@ -213,28 +213,31 @@ function results3() {
   cy.get('[class="styles__OverviewCardsContainer-sc-c90lrf-1 hAGWrL"]')
     .eq(0)
     .children()
-    .should("have.length", 1);
-  cy.get('[class="styles__OverviewCardContainer-sc-o8j682-0 iYckIg"]')
+    .should("have.length", 2);
+  cy.get('[class="styles__OverviewRowsContainer-sc-1eo7w0k-0 evpIme"]')
     .eq(0)
     .children()
     .should("have.length", 3);
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(0)
-    .contains("Votre capacité d’emprunt sur 25 ans");
-  cy.get('[class="styles__OverviewRowContainer-sc-xdxkzf-0 bHJvsf"]')
+    .contains("Votre budget total");
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
     .eq(1)
     .contains("Votre remboursement d’emprunt");
+  cy.get('[class="styles__OverviewRowContainer-sc-1kxx42t-0 gvOxsU"]')
+    .eq(2)
+    .contains("Vous n’avez pas de locataire");
 }
 
 function results4() {
   cy.url().should("include", "/mortgage-calculator/result", {
     timeout: 10000,
   });
-  cy.get('[class="styles__RejectCardContainer-sc-a1qy4r-1 ARDvD"]')
+  cy.get('[class="styles__RejectCardContainer-sc-a1qy4r-1 beZzoD"]')
     .eq(0)
     .children()
     .should("have.length", 1);
   cy.get('[class="styles__ListOfReasons-sc-a1qy4r-3 kCXPRE"]').contains(
-    "Apport insuffisant"
+    "Capacité d’emprunt trop faible"
   );
 }
