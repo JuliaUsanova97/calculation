@@ -67,13 +67,18 @@ describe("Successfully results for one investor", () => {
       .clear()
       .type("210");
     cy.get('[role="option"]', { timeout: 1000 }).eq(0).click();
-    cy.findByText("Salarié du privé").click();
-    cy.findByText("En CDI").click();
-    cy.findByText("Hors période d'essai").click({ force: true });
+    cy.findByText("Autre").click();
     cy.findByText("Suivant").should("not.be.disabled").click();
-    secondStep("2000", "1000", "20000");
-    thirdStep("500", "100");
-    fourthStep("22222", "3000");
+    cy.findByPlaceholderText("Revenus nets mensuels").clear().type("1000");
+    cy.findByText("Nb mois").click();
+    cy.get('[tabindex="-1"]').eq(0).click();
+    cy.findAllByText("Non").eq(0).click();
+    cy.findAllByText("Non").eq(1).click();
+    cy.findByText("Suivant").should("not.be.disabled").click();
+    cy.findAllByText("Non").eq(0).click();
+    cy.findAllByText("Non").eq(1).click();
+    cy.findByText("Suivant").should("not.be.disabled").click();
+    fourthStep("22222", "10000");
     results3();
   });
 
